@@ -7,6 +7,7 @@ using TMPro;
 public class GameController : MonoBehaviour
 {
     public static GameController instance;
+    public static PowerUps instancePU;
     public GameObject mainMenu, inGameUI,endScreen,recordPanel;
 
     public Transform molesParent;
