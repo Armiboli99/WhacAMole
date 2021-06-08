@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class MoleBehaviour : MonoBehaviour
 {
     Vector3 originalPosition;
@@ -10,6 +11,7 @@ public class MoleBehaviour : MonoBehaviour
     public float initTimeMin = 0.5f;
     public float initTimeMax = 3.5f;
     private bool moleIsRunning = true;
+
 
 
     // Start is called before the first frame update
@@ -78,6 +80,7 @@ public class MoleBehaviour : MonoBehaviour
         {
             ResetMole(3.5f, 7.8f);
         }
+        
     }
 
     public void StopMole()
@@ -89,5 +92,6 @@ public class MoleBehaviour : MonoBehaviour
         transform.position = newPos;
     }
 
+    
 
 }

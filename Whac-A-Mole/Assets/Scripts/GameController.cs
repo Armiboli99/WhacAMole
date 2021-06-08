@@ -24,7 +24,9 @@ public class GameController : MonoBehaviour
     public TMP_InputField nameField;
     string playerName;
 
-    public TextMeshProUGUI infoGame;
+    public TextMeshProUGUI infoGame, etiquetaPuntos;
+
+
 
     void Awake()
     {
@@ -52,6 +54,11 @@ public class GameController : MonoBehaviour
         points = 0;
         clicks = 0;
         failedClicks = 0;
+
+
+        //referenciar texto
+
+        
 
         //Activa la UI inicial
         inGameUI.SetActive(false);
@@ -83,7 +90,7 @@ public class GameController : MonoBehaviour
             {
                 CheckClicks();
             }
-            
+            etiquetaPuntos.text = points.ToString();
         }
     }
 
@@ -174,9 +181,12 @@ public class GameController : MonoBehaviour
                 if (hitInfo.collider.tag.Equals("Mole"))
                 {
                     MoleBehaviour mole = hitInfo.collider.GetComponent<MoleBehaviour>();
+                    points += 100;
+                    Debug.Log(points);
                     if (mole != null)
                     {
                         mole.OnHitMole();
+                        
                     }
                 }
             }
@@ -203,4 +213,6 @@ public class GameController : MonoBehaviour
     
     
     }
+   
+
 }
