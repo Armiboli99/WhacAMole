@@ -20,11 +20,12 @@ public class GameController : MonoBehaviour
     int points = 0;
     int clicks = 0;
     int failedClicks = 0;
+    int recordPoints = 0;
 
     public TMP_InputField nameField;
     string playerName;
 
-    public TextMeshProUGUI infoGame, etiquetaPuntos;
+    public TextMeshProUGUI infoGame, etiquetaPuntos, recordScoreLayer;
 
 
 
@@ -92,17 +93,27 @@ public class GameController : MonoBehaviour
             }
             etiquetaPuntos.text = points.ToString(); 
         }
+        recordScoreLayer.text = PlayerPrefs.GetString("NombreJugador", playerName) + "  " + PlayerPrefs.GetInt("PuntuacionMaxima", recordPoints).ToString() + " puntos";
+       
     }
 
-
+    
     void ShowEndScreen()
     {
         endScreen.SetActive(true);
-        infoGame.text = " Total points : " + "000" + "\n Record: " + "100" + "\n 10" + "% good shots \n" + "999" + " bad shots";
+        infoGame.text = " Total points : " + points + "\n Record actual : " + PlayerPrefs.GetInt("PuntuacionMaxima", recordPoints).ToString() + " por " + PlayerPrefs.GetString("NombreJugador", playerName) + "\n 10" + "% good shots \n" + "999" + " bad shots";
 
         bool isRecord = false;
+
+        if (points > PlayerPrefs.GetInt("PuntuacionMaxima", recordPoints))
+        {
+            PlayerPrefs.SetString("NombreRecord", playerName);
+            isRecord = true;
+        }
         //si hay nuevo record mostrar el panel recordPanel
         recordPanel.SetActive(isRecord);
+
+
     }
 
     /// <summary>
@@ -115,7 +126,8 @@ public class GameController : MonoBehaviour
         //Acceso al texto escrito
         playerName = nameField.text;
         Debug.Log("Record de " + playerName);
-
+        //Guarda Puntuacion maxima  
+        GuardarRecord();
         //Reinicia información del juego
         ResetGame();
         //Cambia las pantallas
@@ -150,8 +162,12 @@ public class GameController : MonoBehaviour
 
     public void EnterMainScreen()
     {
+        playerName = "ArmicheBack";
+        //Guarda puntuacion maxima
+        GuardarRecord();
         //Reinicia información del juego
         ResetGame();
+        
         //Cambia las pantallas
         inGameUI.SetActive(false);
         mainMenu.SetActive(true);
@@ -213,6 +229,26 @@ public class GameController : MonoBehaviour
     
     
     }
-   
 
+    public void GuardarRecord()
+    {
+        if (points > PlayerPrefs.GetInt("PuntuacionMaxima", recordPoints))
+        {
+            
+            PlayerPrefs.SetInt("PuntuacionMaxima", points);
+            PlayerPrefs.SetString("NombreJugador", playerName);
+            PlayerPrefs.Save();
+            recordScoreLayer.text = recordPoints.ToString();
+        }
+        
+    }
+    public void GuardarNombreRecord()
+    {
+        if (points > PlayerPrefs.GetInt("PuntuacionMaxima", recordPoints))
+        {
+            PlayerPrefs.SetString("NombreRecord", playerName);
+       
+        }
+         
+    }
 }
