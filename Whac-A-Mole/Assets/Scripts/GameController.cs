@@ -21,6 +21,10 @@ public class GameController : MonoBehaviour
     int clicks = 0;
     int failedClicks = 0;
     int recordPoints = 0;
+    float clicksTotales = -1f;
+    float clicksAcertados = 0f;
+    float porcentajeClicksAcetados = 0f;
+    float clicksFallidos = 0f;
 
     public TMP_InputField nameField;
     string playerName;
@@ -95,14 +99,17 @@ public class GameController : MonoBehaviour
             etiquetaPuntos.text = points.ToString(); 
         }
         recordScoreLayer.text = PlayerPrefs.GetString("NombreJugador", playerName) + "  " + PlayerPrefs.GetInt("PuntuacionMaxima", recordPoints).ToString() + " puntos";
-       
+        PorcentajeClicks();
+        CalcularClicksFallidos();
+
+
     }
 
     
     void ShowEndScreen()
     {
         endScreen.SetActive(true);
-        infoGame.text = " Total points : " + points + "\n Record actual : " + PlayerPrefs.GetInt("PuntuacionMaxima", recordPoints).ToString() + " por " + PlayerPrefs.GetString("NombreJugador", playerName) + "\n 10" + "% good shots \n" + "999" + " bad shots";
+        infoGame.text = " Total points : " + points + "\n Record actual : " + PlayerPrefs.GetInt("PuntuacionMaxima", recordPoints).ToString() + " por " + PlayerPrefs.GetString("NombreJugador", playerName) + "\n "+ porcentajeClicksAcetados + "% good shots \n" + clicksFallidos + " bad shots";
 
         bool isRecord = false;
 
@@ -122,8 +129,9 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void Retry()
     {
-        //Guardar record si es necesario
 
+        clicksAcertados = 0f;
+        clicksTotales = -1f;
         //Acceso al texto escrito
         playerName = nameField.text;
         Debug.Log("Record de " + playerName);
@@ -191,15 +199,21 @@ public class GameController : MonoBehaviour
                 pos = Input.GetTouch(0).position;
             }
 
+            
             Ray rayo = Camera.main.ScreenPointToRay(pos);
             RaycastHit hitInfo;
+            clicksTotales++;
+           
             if (Physics.Raycast(rayo, out hitInfo))
             {
+                
                 if (hitInfo.collider.tag.Equals("Mole"))
                 {
                     MoleBehaviour mole = hitInfo.collider.GetComponent<MoleBehaviour>();
                     points += 100;
-                    Debug.Log(points);
+                    clicksAcertados++;
+                    Debug.Log(clicksAcertados);
+                    
                     if (mole != null)
                     {
                         mole.OnHitMole();
@@ -250,6 +264,14 @@ public class GameController : MonoBehaviour
             PlayerPrefs.SetString("NombreRecord", playerName);
        
         }
-         
+    }
+    public void PorcentajeClicks()
+    {
+        porcentajeClicksAcetados = ((clicksAcertados / clicksTotales) * 100);
+
+    }
+    public void CalcularClicksFallidos()
+    {
+        clicksFallidos = (clicksTotales - clicksAcertados);
     }
 }
