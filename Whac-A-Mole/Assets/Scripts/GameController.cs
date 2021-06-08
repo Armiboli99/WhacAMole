@@ -25,7 +25,7 @@ public class GameController : MonoBehaviour
     public TMP_InputField nameField;
     string playerName;
 
-    public TextMeshProUGUI infoGame, etiquetaPuntos, recordScoreLayer;
+    public TextMeshProUGUI infoGame, etiquetaPuntos, recordScoreLayer, etiquetaTiempo;
 
 
 
@@ -71,10 +71,11 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (playing == true)
         {
             timePlayed += Time.deltaTime;
-
+            etiquetaTiempo.text = "Tiempo: " + Mathf.Floor(timePlayed) + "s";
             if (timePlayed >= gameDuration)
             {
 
