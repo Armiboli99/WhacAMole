@@ -78,7 +78,7 @@ public class MoleBehaviour : MonoBehaviour
     {
         if (isShown == true)
         {
-            ResetMole(3.5f, 7.8f);
+            ResetMole(3.5f, 7.8f); 
         }
         
     }

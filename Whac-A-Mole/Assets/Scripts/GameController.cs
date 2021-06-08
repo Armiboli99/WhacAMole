@@ -90,7 +90,7 @@ public class GameController : MonoBehaviour
             {
                 CheckClicks();
             }
-            etiquetaPuntos.text = points.ToString();
+            etiquetaPuntos.text = points.ToString(); 
         }
     }
 
